@@ -1,5 +1,8 @@
+import {memo, useContext} from 'react'
 import './TodoItem.scss'
 import clsx from 'clsx'
+import TodoInfo from '../TodoInfo/index.js'
+import {TaskContext} from '../../context/TaskContext.jsx'
 
 const TodoItem = (props) => {
   const {
@@ -7,19 +10,25 @@ const TodoItem = (props) => {
     id,
     title,
     isDone,
-    ref,
-    onDeleteTaskButtonClick,
-    onTaskCompleteChange,
   } = props
 
+  const {
+    firstIncompleteTaskRef,
+    firstIncompleteTaskRefId,
+    deleteTask,
+    toggleTaskId,
+  } = useContext(TaskContext)
+
   return (
-    <li className={clsx('todo-item', className)} ref={ref}>
+    <li
+      className={clsx('todo-item', className)}
+      ref={id === firstIncompleteTaskRefId ? firstIncompleteTaskRef : null}>
       <input
         className="todo-item__checkbox"
         id={id}
         type="checkbox"
         checked={isDone}
-        onChange={(event) => onTaskCompleteChange(id, event.target.checked)}
+        onChange={(event) => toggleTaskId(id, event.target.checked)}
       />
       <label
         className="todo-item__label"
@@ -31,7 +40,7 @@ const TodoItem = (props) => {
         className="todo-item__delete-button"
         aria-label="Delete"
         title="Delete"
-        onClick={() => onDeleteTaskButtonClick(id)}
+        onClick={() => deleteTask(id)}
       >
         <svg
           width="20"
@@ -53,4 +62,4 @@ const TodoItem = (props) => {
   )
 }
 
-export default TodoItem
+export default memo(TodoItem)

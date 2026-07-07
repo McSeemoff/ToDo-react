@@ -1,18 +1,37 @@
 import './AddTaskForm.scss'
 import Field from '../Field'
 import Button from '../Button'
+import { useContext, useState } from 'react'
+import { TaskContext } from '../../context/TaskContext'
 
-const AddTaskForm = (props) => {
+const AddTaskForm = () => {
   const {
     addTask,
     newTaskTitle,
     setNewTaskTitle,
     newTaskInputRef
-  } = props
+  } = useContext( TaskContext )
+
+  const [error, setError] = useState()
+
+  const clearNewTaskTitle = newTaskTitle.trim()
+  const isNewTaskTitleEmpty = clearNewTaskTitle.length === 0
 
   const onSubmit = (event) => {
     event.preventDefault()
-    addTask()
+
+    if (!isNewTaskTitleEmpty) {
+      addTask(clearNewTaskTitle)
+    }
+  }
+
+  const onInput = (event) => {
+    const { value } = event.target
+    const clearValue =  value.trim()
+    const hasOnlySpaces = value.length > 0 && clearValue.length === 0
+
+    setNewTaskTitle(value)
+    setError(hasOnlySpaces ? 'Задача не может быть пустой' : '')
   }
 
   return (
@@ -22,10 +41,16 @@ const AddTaskForm = (props) => {
         label="Новая задача"
         id="new-task"
         value={newTaskTitle}
-        onInput={(event) => setNewTaskTitle(event.target.value)}
+        error={error}
+        onInput={onInput}
         ref={newTaskInputRef}
       />
-      <Button type="submit">Добавить</Button>
+      <Button
+        type="submit"
+        isDisabled={isNewTaskTitleEmpty}
+      >
+        Добавить
+      </Button>
     </form>
   )
 }
