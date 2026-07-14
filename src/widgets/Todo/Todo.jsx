@@ -1,0 +1,29 @@
+import { useContext } from 'react'
+import './Todo.scss'
+import AddTaskForm from '@/features/add-task'
+import SearchTaskForm from '@/features/search-task'
+import TodoInfo from '@/features/stats'
+import { TodoList } from '@/entities/todo'
+import Button from '@/shared/ui/Button'
+import { TaskContext } from '@/entities/todo'
+
+const Todo = () => {
+  const { firstIncompleteTaskRef } = useContext(TaskContext)
+
+  return (
+    <div className="todo">
+      <h1 className="todo__title">Список дел</h1>
+      <AddTaskForm />
+      <SearchTaskForm />
+      <TodoInfo />
+      <Button
+        onClick={() => firstIncompleteTaskRef.current?.scrollIntoView({behavior: 'smooth'})}
+      >
+        Первая невыполненная задача
+      </Button>
+      <TodoList />
+    </div>
+  )
+}
+
+export default Todo
