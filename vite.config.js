@@ -8,7 +8,7 @@ export default defineConfig((mode) => {
 
 
   return {
-    base: isProd ? '/todo-react/' : '/'
+    base: isProd ? '/ToDo-react/' : '/',
     plugins: [react()],
     resolve: {
       alias: {
