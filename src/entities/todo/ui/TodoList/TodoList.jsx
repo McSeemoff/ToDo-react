@@ -1,6 +1,6 @@
 import { memo, useContext } from 'react'
-import './TodoList.scss'
 import { TodoItem, TaskContext } from '@/entities/Todo'
+import './TodoList.scss'
 
 const TodoList = () => {
   const {
